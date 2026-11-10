@@ -8,19 +8,17 @@ DATA_FILE = 'data.json'
 
 # Dữ liệu từ vựng mới theo yêu cầu của bạn
 DEFAULT_VOCAB = [
-    {"en": "Suburb", "vi": "Vùng ngoại ô"},
-    {"en": "Facilities", "vi": "Cơ sở vật chất"},
-    {"en": "Community", "vi": "Cộng đồng"},
-    {"en": "Get on with", "vi": "Mối quan hệ tốt với"},
-    {"en": "Remind of", "vi": "Gợi nhớ về"},
-    {"en": "Craft Village", "vi": "Làng nghề thủ công"},
-    {"en": "Garbage collector", "vi": "Nhân viên dọn vệ sinh"},
-    {"en": "Artisan", "vi": "Nghệ nhân"},
-    {"en": "Handicraft", "vi": "Sản phẩm thủ công"},
-    {"en": "Speciality", "vi": "Đặc sản"},
-    {"en": "Electrician", "vi": "Thợ điện"},
-    {"en": "Fire fighter", "vi": "Lính cứu hỏa"},
-    {"en": "Delivery person", "vi": "Nhân viên giao hàng"}
+    {"en": "Complex", "vi": "Quần thể, khu phức hợp"},
+    {"en": "Religious", "vi": "Tôn giáo"},
+    {"en": "Religion", "vi": "Tôn giáo"},
+    {"en": "Monument", "vi": "Tượng đài"},
+    {"en": "Magrificent", "vi": "Tráng lệ"},
+    {"en": "Preserve", "vi": "Bảo tồn"},
+    {"en": "Heritage", "vi": "Di sản"},
+    {"en": "Occupy, Occupied, Occupation", "vi": "Chiếm dữ, có người ở"},
+    {"en": "Ancient", "vi": "Cổ kính, lâu đời"},
+    {"en": "Generation", "vi": "Thế hệ"},
+    {"en": "Found", "vi": "Thành lập"},
 ]
 
 def load_data():
