@@ -19,6 +19,10 @@ DEFAULT_VOCAB = [
     {"en": "Ancient", "vi": "Cổ kính, lâu đời"},
     {"en": "Generation", "vi": "Thế hệ"},
     {"en": "Found", "vi": "Thành lập"},
+    {"en": "Structure", "vi": "Cấu trúc"},
+    {"en": "Promote", "vi": "Thúc đẩy"},
+    {"en": "observe", "vi": "Duy trì, tuân theo"},
+    {"en": "benefit", "vi": "Lợi ích, giúp ích"},
 ]
 
 def load_data():
