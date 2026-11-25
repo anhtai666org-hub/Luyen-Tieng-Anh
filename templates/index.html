@@ -505,24 +505,37 @@
             document.getElementById('password-modal').classList.add('hidden');
         }
 
-        function verifyPassword(e) {
+        async function verifyPassword(e) {
             e.preventDefault();
             const input = document.getElementById('admin-password-input');
-            const pass = input.value;
+            const submitButton = document.querySelector('#password-form button[type="submit"]');
+            submitButton.disabled = true;
 
-            if (pass === "Vocabulary111012") {
-                isAdminLoggedIn = true;
-                closePasswordModal();
-                document.getElementById('admin-modal').classList.remove('hidden');
-                renderVocabTable();
-            } else {
-                if (navigator.vibrate) navigator.vibrate(200);
-                input.classList.add('animate-shake');
-                input.style.borderColor = '#ef4444';
-                input.value = '';
-                setTimeout(() => {
-                    input.classList.remove('animate-shake');
-                }, 300);
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: input.value })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    isAdminLoggedIn = true;
+                    closePasswordModal();
+                    document.getElementById('admin-modal').classList.remove('hidden');
+                    renderVocabTable();
+                } else {
+                    if (navigator.vibrate) navigator.vibrate(200);
+                    input.classList.add('animate-shake');
+                    input.style.borderColor = '#ef4444';
+                    input.value = '';
+                    showTopAlert(data.message || 'Mật khẩu không chính xác!');
+                    setTimeout(() => input.classList.remove('animate-shake'), 300);
+                }
+            } catch (error) {
+                showTopAlert('Không thể kết nối máy chủ. Vui lòng thử lại.');
+            } finally {
+                submitButton.disabled = false;
             }
         }
 
@@ -627,7 +640,20 @@
             alert("Đã áp dụng bố cục: " + (style === 'centered' ? 'Căn giữa tiêu chuẩn' : 'Mở rộng khung'));
         }
 
+        // Khôi phục trạng thái quản trị từ session phía máy chủ.
+        async function checkAdminSession() {
+            try {
+                const res = await fetch('/api/admin/status');
+                const data = await res.json();
+                isAdminLoggedIn = res.ok && data.authenticated === true;
+                renderVocabTable();
+            } catch (error) {
+                console.warn('Không kiểm tra được session quản trị:', error);
+            }
+        }
+
         // Khởi chạy khi load trang
+        checkAdminSession();
         fetchVocab();
         setInterval(fetchVocab, 10000);
     </script>
