@@ -1,8 +1,21 @@
 import os
 import json
-from flask import Flask, render_template, request, jsonify
+import hmac
+from flask import Flask, render_template, request, jsonify, session
 
 app = Flask(__name__)
+# Set SECRET_KEY and ADMIN_PASSWORD in Render Environment.
+app.config.update(
+    SECRET_KEY=os.environ.get('SECRET_KEY') or os.urandom(32),
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SECURE=os.environ.get('RENDER') == 'true',
+    PERMANENT_SESSION_LIFETIME=60 * 60 * 12,
+)
+
+
+def admin_required():
+    return session.get('is_admin') is True
 
 DATA_FILE = 'data.json'
 
@@ -55,11 +68,36 @@ def get_vocab():
     vocab = load_data()
     return jsonify(vocab)
 
+@app.route('/api/admin/login', methods=['POST'])
+def admin_login():
+    data = request.get_json(silent=True) or {}
+    password = data.get('password', '')
+    configured_password = os.environ.get('ADMIN_PASSWORD', '')
+
+    if not configured_password:
+        return jsonify({'success': False, 'message': 'Máy chủ chưa cấu hình ADMIN_PASSWORD.'}), 503
+    if not isinstance(password, str) or not hmac.compare_digest(password, configured_password):
+        return jsonify({'success': False, 'message': 'Mật khẩu không chính xác!'}), 401
+
+    session.clear()
+    session.permanent = True
+    session['is_admin'] = True
+    return jsonify({'success': True})
+
+
+@app.route('/api/admin/status', methods=['GET'])
+def admin_status():
+    return jsonify({'authenticated': admin_required()})
+
+
 @app.route('/api/vocab', methods=['POST'])
 def add_vocab():
-    data = request.get_json()
-    en = data.get('en', '').strip()
-    vi = data.get('vi', '').strip()
+    if not admin_required():
+        return jsonify({'success': False, 'message': 'Bạn cần xác thực quản trị.'}), 401
+
+    data = request.get_json(silent=True) or {}
+    en = data.get('en', '').strip() if isinstance(data.get('en', ''), str) else ''
+    vi = data.get('vi', '').strip() if isinstance(data.get('vi', ''), str) else ''
     
     if not en or not vi:
         return jsonify({"success": False, "message": "Thiếu thông tin từ vựng!"}), 400
@@ -75,11 +113,14 @@ def add_vocab():
 
 @app.route('/api/vocab/delete', methods=['POST'])
 def delete_vocab():
-    data = request.get_json()
+    if not admin_required():
+        return jsonify({'success': False, 'message': 'Bạn cần xác thực quản trị.'}), 401
+
+    data = request.get_json(silent=True) or {}
     index_to_delete = data.get('index')
     
     vocab = load_data()
-    if index_to_delete is not None and 0 <= index_to_delete < len(vocab):
+    if isinstance(index_to_delete, int) and not isinstance(index_to_delete, bool) and 0 <= index_to_delete < len(vocab):
         vocab.pop(index_to_delete)
         save_data(vocab)
         return jsonify({"success": True, "data": vocab})
