@@ -63,6 +63,11 @@ def save_data(data):
 def index():
     return render_template('index.html')
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'ok'}), 200
+
+
 @app.route('/api/vocab', methods=['GET'])
 def get_vocab():
     vocab = load_data()
