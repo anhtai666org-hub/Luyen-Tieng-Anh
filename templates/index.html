@@ -46,6 +46,11 @@
                     <i class="fa-solid fa-palette mr-1.5"></i> Tùy chỉnh
                 </button>
             </nav>
+            <button id="music-toggle" type="button" aria-label="Bật nhạc" aria-pressed="false" title="Bật nhạc"
+                class="w-10 h-10 shrink-0 rounded-xl border border-slate-700 bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 transition-all flex items-center justify-center"
+                onclick="toggleMusic()">
+                <i id="music-icon" class="fa-solid fa-volume-xmark text-base"></i>
+            </button>
         </div>
     </header>
 
@@ -232,9 +237,54 @@
         </div>
     </div>
 
+    <!-- Nhạc nền -->
+    <audio id="background-music" src="https://raw.githubusercontent.com/anhtai666org-hub/Luyen-Tieng-Anh/main/Aiobahn%20%2B81%20feat.%20DEMONDICE%20-%20DEMON'S%20SHOT%20(Official%20MV)%20%5BTheme%20for%20PUKEY%20GODDESS%20SHOT%20TRICK%5D" preload="auto" loop></audio>
+
     <!-- JavaScript Logic -->
     <script>
         let vocabList = [];
+        // Nhạc nền: tự phát khi mở trang, nút loa dùng để bật/tắt
+        const backgroundMusic = document.getElementById('background-music');
+        const musicToggle = document.getElementById('music-toggle');
+        const musicIcon = document.getElementById('music-icon');
+
+        function updateMusicButton(isPlaying) {
+            musicIcon.className = isPlaying
+                ? 'fa-solid fa-volume-high text-base'
+                : 'fa-solid fa-volume-xmark text-base';
+            musicToggle.setAttribute('aria-label', isPlaying ? 'Tắt nhạc' : 'Bật nhạc');
+            musicToggle.setAttribute('aria-pressed', String(isPlaying));
+            musicToggle.title = isPlaying ? 'Tắt nhạc' : 'Bật nhạc';
+        }
+
+        async function toggleMusic() {
+            if (backgroundMusic.paused) {
+                try {
+                    await backgroundMusic.play();
+                    updateMusicButton(true);
+                } catch (error) {
+                    updateMusicButton(false);
+                    console.warn('Trình duyệt chưa cho phép phát nhạc:', error);
+                }
+            } else {
+                backgroundMusic.pause();
+                updateMusicButton(false);
+            }
+        }
+
+        backgroundMusic.addEventListener('play', () => updateMusicButton(true));
+        backgroundMusic.addEventListener('pause', () => updateMusicButton(false));
+        backgroundMusic.addEventListener('ended', () => updateMusicButton(false));
+
+        // Thử tự phát khi người dùng mở website.
+        backgroundMusic.play().then(() => {
+            updateMusicButton(true);
+        }).catch(() => {
+            // Một số trình duyệt chặn tự phát có âm thanh.
+            // Người dùng có thể nhấn nút loa để bắt đầu phát.
+            updateMusicButton(false);
+        });
+
         let currentQuestion = null;
         let remainingMistakes = 3;
         let isAdminLoggedIn = false;
