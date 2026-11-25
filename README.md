@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="Resources/hinh-nen-may-tinh-anime-2629.webp" alt="NINA VOCABULARY PRACTICE" width="88" />
+<img src="Resources/Hizi.png" alt="NINA VOCABULARY PRACTICE" width="88" />
 
-# LuyenTiengAnh
+# Luyện Tiếng Anh
 Dùng để luyện tiếng Anh
