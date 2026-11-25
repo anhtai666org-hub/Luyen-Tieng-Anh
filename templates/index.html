@@ -31,7 +31,7 @@
         <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center space-x-2">
                 <div id="logo-box" class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-lg shadow-lg shadow-indigo-500/30 transition-colors">H</div>
-                <span class="font-bold text-lg tracking-wider bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Hatakawa Vocab</span>
+                <span class="font-bold text-lg tracking-wider bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Nina - Vocabulary Practice</span>
             </div>
             
             <!-- Thanh điều hướng Tab -->
@@ -66,13 +66,13 @@
                 <div class="flex justify-center mb-6">
                     <div class="inline-flex bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800 text-xs sm:text-sm font-medium gap-1 flex-wrap justify-center">
                         <button onclick="setPracticeMode('mixed')" id="mode-btn-mixed" class="mode-btn px-3 py-1.5 rounded-xl transition-all bg-indigo-600 text-white shadow-md">
-                            Hỗn hợp
+                            Tự vựng Anh/Việt
                         </button>
                         <button onclick="setPracticeMode('vi_to_en')" id="mode-btn-vi_to_en" class="mode-btn px-3 py-1.5 rounded-xl transition-all text-slate-400 hover:text-white">
-                            Toàn Anh (Việt &rarr; Anh)
+                            Việt &rarr; Anh
                         </button>
                         <button onclick="setPracticeMode('en_to_vi')" id="mode-btn-en_to_vi" class="mode-btn px-3 py-1.5 rounded-xl transition-all text-slate-400 hover:text-white">
-                            Toàn Việt (Anh &rarr; Việt)
+                            Anh &rarr; Việt
                         </button>
                     </div>
                 </div>
@@ -84,12 +84,12 @@
 
                 <form id="practice-form" onsubmit="checkAnswer(event)" class="space-y-4">
                     <div class="relative">
-                        <input type="text" id="user-answer" autocomplete="off" placeholder="Nhập câu trả lời của bạn..." 
+                        <input type="text" id="user-answer" autocomplete="off" placeholder="Đáp án của bạn là..." 
                             class="w-full px-5 py-4 rounded-2xl bg-slate-950 border-2 border-slate-700 text-slate-100 text-center text-lg focus:outline-none focus:border-indigo-500 transition-all shadow-inner">
                     </div>
                     
                     <button type="submit" id="submit-btn" class="w-full py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 active:scale-[0.99] font-semibold text-white transition-all shadow-lg shadow-indigo-600/30">
-                        Kiểm tra đáp án <i class="fa-solid fa-arrow-right ml-1"></i>
+                        Gửi đáp án <i class="fa-solid fa-arrow-right ml-1"></i>
                     </button>
                 </form>
 
@@ -131,8 +131,8 @@
         <!-- TAB 3: TÙY CHỈNH GIAO DIỆN -->
         <section id="tab-settings" class="hidden space-y-6 max-w-xl mx-auto w-full">
             <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
-                <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-palette text-indigo-400"></i> Tùy chỉnh giao diện</h2>
-                <p class="text-sm text-slate-400 mb-6">Chọn màu sắc chủ đạo giao diện (Hiển thị 4 màu nhanh và nút mở bảng đầy đủ 12 màu).</p>
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-palette text-indigo-400"></i> Giao diện Tùy chỉnh</h2>
+                <p class="text-sm text-slate-400 mb-6">Chọn màu giao diện (Hiển thị 4 màu nhanh và nút mở bảng đầy đủ 12 màu).</p>
                 
                 <div class="space-y-6">
                     <div>
@@ -286,7 +286,7 @@
         });
 
         let currentQuestion = null;
-        let remainingMistakes = 3;
+        let remainingMistakes = 5;
         let isAdminLoggedIn = false;
         let currentThemeColor = 'indigo';
         let recentQuestions = []; // Mảng lưu 10 câu gần nhất để chống lặp
